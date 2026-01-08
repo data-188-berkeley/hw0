@@ -1,8 +1,8 @@
 import numpy as np
 import sys
 import numdifftools as nd
-sys.path.append("./apps")
-from simple_ml_hw0 import *
+#sys.path.append("./apps")
+from apps.simple_ml_hw0 import *
 
 
 ##############################################################################
