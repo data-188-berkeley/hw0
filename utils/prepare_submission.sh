@@ -14,6 +14,6 @@ if [ -f "${zip_outpath}" ]; then
     rm -f "${zip_outpath}"
 fi
 
-# zip current working directory, with excludes to keep filesize small
-zip -r "${zip_outpath}" . -x "*.git*" "data/*" "*.ipynb_checkpoints*" ".env/*" "*.pyc"
+# zip entire current working directory, with excludes to keep filesize small
+zip -r "${zip_outpath}" . -x "*.git*" "data/*" "*.ipynb_checkpoints*" ".env/*" "*.pyc" "*.pytest_cache*" "*__pycache__*"
 echo "Created zip at: ${zip_outpath}"
