@@ -126,8 +126,8 @@ def loss_err(h: np.ndarray, y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return softmax_loss(h,y), np.mean(h.argmax(axis=1) != y)
 
 
-def train_softmax(X_tr, y_tr, X_te, y_te, epochs=10, lr=0.5, batch=100,
-                  cpp=False):
+def train_softmax(X_tr: np.ndarray, y_tr: np.ndarray, X_te, y_te, epochs: int = 10, lr: float = 0.5, batch: int = 100,
+                  cpp: bool = False, visualize_preds: bool = False) -> np.ndarray:
     """ Example function to fully train a softmax regression classifier """
     theta = np.zeros((X_tr.shape[1], y_tr.max()+1), dtype=np.float32)
     print("| Epoch | Train Loss | Train Err | Test Loss | Test Err |")
@@ -141,9 +141,15 @@ def train_softmax(X_tr, y_tr, X_te, y_te, epochs=10, lr=0.5, batch=100,
         print("|  {:>4} |    {:.5f} |   {:.5f} |   {:.5f} |  {:.5f} |"\
               .format(epoch, train_loss, train_err, test_loss, test_err))
 
+    if visualize_preds:
+        # Visualize model predictions
+        from python.needle.utils.visualize_mnist import visualize_mnist_epoch
+        final_pred_logits = X_te @ theta
+        for digit in range(0, 10):
+            visualize_mnist_epoch(final_pred_logits, X_te, 1, 28, 28, y_te, digit=digit, top_k=5)
 
 def train_nn(X_tr, y_tr, X_te, y_te, hidden_dim = 500,
-             epochs=10, lr=0.5, batch=100):
+             epochs=10, lr=0.5, batch=100, visualize_preds: bool = False):
     """ Example function to train two layer neural network """
     n, k = X_tr.shape[1], y_tr.max() + 1
     np.random.seed(0)
@@ -158,6 +164,12 @@ def train_nn(X_tr, y_tr, X_te, y_te, hidden_dim = 500,
         print("|  {:>4} |    {:.5f} |   {:.5f} |   {:.5f} |  {:.5f} |"\
               .format(epoch, train_loss, train_err, test_loss, test_err))
 
+    if visualize_preds:
+        # Visualize model predictions
+        from python.needle.utils.visualize_mnist import visualize_mnist_epoch
+        final_pred_logits = np.maximum(X_te @ W1, 0) @ W2
+        for digit in range(0, 10):
+            visualize_mnist_epoch(final_pred_logits, X_te, 1, 28, 28, y_te, digit=digit, top_k=5)
 
 
 if __name__ == "__main__":
